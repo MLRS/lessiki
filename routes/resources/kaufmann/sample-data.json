@@ -1,0 +1,39 @@
+/* 1 */
+{
+    "_id" : ObjectId("57d853949543ec2c4f90c60c"),
+    "lemma" : "abbanduna",
+    "gabra_id" : ObjectId("522d85dc6f3bad51370006d8"),
+    "definitions" : [
+        {
+            "gloss" : "verlassen"
+        },
+        {
+            "gloss" : "aufgeben"
+        },
+        {
+            "gloss" : "verzichten"
+        }
+    ]
+}
+
+/* 2 */
+{
+    "_id" : ObjectId("57d854a99543ec2c4f90c60d"),
+    "lemma" : "laħam",
+    "gabra_id" : ObjectId("522d86006f3bad5137000a53"),
+    "definitions" : [
+        {
+            "gloss" : "Fleisch",
+            "gender" : "n"
+        },
+        {
+            "phrase" : "laħam taċ-ċanga",
+            "gloss" : "Rindfleisch"
+        },
+        {
+            "phrase" : "laħam tal-kaċċa",
+            "gloss" : "Wildbret",
+            "gender" : "n"
+        }
+    ]
+}

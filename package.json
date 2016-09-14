@@ -1,0 +1,30 @@
+{
+  "name": "lessiki",
+  "version": "1.0.0",
+  "description": "Generic platform for lexica of Maltese",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnjcamilleri/lessiki.git"
+  },
+  "author": "John J. Camilleri",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/johnjcamilleri/lessiki/issues"
+  },
+  "homepage": "https://github.com/johnjcamilleri/lessiki#readme",
+  "dependencies": {
+    "async": "^2.0.1",
+    "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "jquery": "^3.1.0",
+    "json-editor": "^0.7.28",
+    "monk": "^3.1.2",
+    "morgan": "^1.7.0",
+    "pug": "^2.0.0-beta6"
+  }
+}
