@@ -4,5 +4,13 @@ module.exports = {
   baseURL: '',
   salt: '',
   analyticsCode: null,
-  sessionSecret: ''
+  sessionSecret: '',
+  resources: [
+    key: {
+      name: "name",
+      authors: ["author 1", "author 2"],
+      license: "",
+      users: ["admin"]
+    }
+  ]
 }

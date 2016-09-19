@@ -1,19 +1,26 @@
 var express = require('express')
 var router = express.Router()
-// var fs = require('fs')
+var fs = require('fs')
 // var async = require('async')
 // var passport = require('passport')
 // var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn
 // var ensureLoggedIn = require('../middlewares/ensureLoggedIn')
 // var config = require('../server-config')
+var marked = require('marked')
 
 // -- Main pages -------------------------------------------------------------
 
 /* GET home page - list entries */
 /* Could contain a serach term in s */
 router.get('/', function (req, res, next) {
-  var db = req.db
-  res.render('index', {
+  // var db = req.db
+  fs.readFile('README.md', 'utf8', function (err, data) {
+    if (err) data = ''
+    var content = marked(data)
+    content = content.replace(/<table>/g, '<table class="table">')
+    res.render('index', {
+      content: content
+    })
   })
 })
 

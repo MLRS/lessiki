@@ -110,8 +110,13 @@ app.use(function (req, res, next) {
 
 app.use('/', require('./routes/index'))
 
+// Custom APIs per resource
+app.use('/resources/kaufmann/', require('./resources/kaufmann/custom-api'))
+
+// Generic API
+app.use('/resources/', require('./routes/generic-api'))
+
 // http://stackoverflow.com/a/27464258/98600
-// app.use('/json-editor', express.static(__dirname + '/node_modules/json-editor/dist/'))
 // app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist/'))
 app.use('/module', express.static(__dirname + '/node_modules/'))
 

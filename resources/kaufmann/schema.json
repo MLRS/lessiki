@@ -1,0 +1,43 @@
+{
+  "title": "Entry",
+  "type": "object",
+  "required" : [
+    "lemma",
+    "definitions"
+  ],
+  "properties": {
+    "_id": {
+      "title": "ID",
+      "type": "string",
+      "propertyOrder": 1
+    },
+    "gabra_id": {
+      "type": "string",
+      "propertyOrder": 2
+    },
+    "lemma": {
+      "type": "string",
+      "propertyOrder": 3
+    },
+    "definitions": {
+      "type": "array",
+      "propertyOrder": 3,
+      "items": {
+        "title": "alternative",
+        "type": "object",
+        "properties": {
+          "gloss": {
+            "type": "string"
+          },
+          "phrase": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "enum",
+            "options": ["n", "f", "m"]
+          }
+        }
+      }
+    }
+  }
+}
