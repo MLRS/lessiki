@@ -1,17 +1,17 @@
 var express = require('express')
 var router = express.Router()
 var fs = require('fs')
-// var async = require('async')
+var async = require('async')
 // var passport = require('passport')
 // var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn
 // var ensureLoggedIn = require('../middlewares/ensureLoggedIn')
-// var config = require('../server-config')
+var checkResource = require('../middlewares/checkResource')
+var config = require('../server-config')
 var marked = require('marked')
 
 // -- Main pages -------------------------------------------------------------
 
-/* GET home page - list entries */
-/* Could contain a serach term in s */
+/* Home page */
 router.get('/', function (req, res, next) {
   // var db = req.db
   fs.readFile('README.md', 'utf8', function (err, data) {
@@ -24,77 +24,55 @@ router.get('/', function (req, res, next) {
   })
 })
 
-// /* Load stuff we need for add/edit */
-// var add_edit = function (req, res, next, params) {
-//   async.parallel({
-//     schema: function (callback) {
-//       fs.readFile(schema_file, 'utf8', function (err, data) {
-//         if (err) data = '{}'
-//         callback(err, data)
-//       })
-//     },
-//     languages: function (callback) {
-//       var collection = req.db.get('languages')
-//       collection.find({}, {'sort': {'order': 1}}, function (err, data) {
-//         var names = []
-//         if (!err) {
-//           names = data.map(function (item) {
-//             return item.abbrev
-//           })
-//         }
-//         callback(err, names)
-//       })
-//     },
-//     references: function (callback) {
-//       var collection = req.db.get('references')
-//       collection.find({}, function (err, data) {
-//         var names = []
-//         if (!err) {
-//           names = data.map(function (item) {
-//             return item.abbrev
-//           })
-//         }
-//         callback(err, names)
-//       })
-//     }},
-//
-//     // All tasks done
-//     function (err, data) {
-//       if (err) {
-//         console.log(err)
-//       }
-//       res.render('edit', {
-//         title: params.title,
-//         schema: data.schema,
-//         languages: data.languages,
-//         references: data.references,
-//         id: params.id
-//       })
-//     }
-//   )
-// }
-//
-// /* GET add */
-// router.get('/add',
-//   ensureLoggedIn(config.baseURL+'/login'),
-//   function (req, res, next) {
-//     add_edit(req, res, next, {
-//       'title': 'New entry',
-//       'id': null
-//     })
-//   }
-// )
-//
-// /* GET edit */
-// router.get('/edit/:id',
-//   ensureLoggedIn(config.baseURL+'/login'),
-//   function (req, res, next) {
-//     add_edit(req, res, next, {
-//       'title': 'Edit entry',
-//       'id': req.params.id
-//     })
-//   }
-// )
+/* Load stuff we need for add/edit */
+var add_edit = function (req, res, next, params) {
+  var schema_file = 'resources/' + req.query.resource + '/schema.json'
+  async.parallel({
+    schema: function (callback) {
+      fs.readFile(schema_file, 'utf8', function (err, data) {
+        if (err) data = '{}'
+        callback(err, data)
+      })
+    }},
+
+    // All tasks done
+    function (err, data) {
+      if (err) {
+        console.log(err)
+      }
+      res.render('edit', {
+        title: params.title,
+        resource: req.query.resource,
+        schema: data.schema,
+        id: params.id
+      })
+    }
+  )
+}
+
+/* GET add */
+router.get('/add',
+  // ensureLoggedIn(config.baseURL+'/login'),
+  checkResource(),
+  function (req, res, next) {
+    add_edit(req, res, next, {
+      'title': 'New entry',
+      'id': null
+    })
+  }
+)
+
+/* GET edit */
+router.get('/edit',
+  // ensureLoggedIn(config.baseURL+'/login'),
+  checkResource(),
+  function (req, res, next) {
+    add_edit(req, res, next, {
+      'title': 'Edit entry',
+      'id': req.query.id
+    })
+  }
+)
 
 // -- Login stuff ------------------------------------------------------------
 

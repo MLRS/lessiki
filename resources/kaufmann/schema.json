@@ -21,20 +21,19 @@
     },
     "definitions": {
       "type": "array",
-      "propertyOrder": 3,
+      "format": "table",
       "items": {
-        "title": "alternative",
         "type": "object",
         "properties": {
-          "gloss": {
-            "type": "string"
-          },
           "phrase": {
             "type": "string"
           },
+          "gloss": {
+            "type": "string"
+          },
           "gender": {
-            "type": "enum",
-            "options": ["n", "f", "m"]
+            "type": "string",
+            "enum": ["n", "f", "m"]
           }
         }
       }

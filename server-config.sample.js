@@ -5,12 +5,12 @@ module.exports = {
   salt: '',
   analyticsCode: null,
   sessionSecret: '',
-  resources: [
+  resources: {
     key: {
       name: "name",
       authors: ["author 1", "author 2"],
       license: "",
       users: ["admin"]
     }
-  ]
+  }
 }
