@@ -1,0 +1,37 @@
+{
+  "title": "Reference",
+  "type": "object",
+  "required": [
+    "abbrev",
+    "authors",
+    "year"
+  ],
+  "properties": {
+    "_id": {
+      "type": "string",
+      "title": "ID",
+      "propertyOrder": 1
+    },
+    "abbrev" : {
+      "type": "string",
+      "title": "Abbreviation"
+    },
+    "authors" : {
+      "type": "array",
+      "title": "Author names",
+      "format": "table",
+      "items": {
+        "type": "string",
+        "title": "Author"
+      }
+    },
+    "year" : {
+      "type": "string",
+      "title": "Year"
+    },
+    "comment" : {
+      "type": "string",
+      "title": "Comment"
+    }
+  }
+}

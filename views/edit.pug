@@ -60,7 +60,7 @@ block content
           if (id) {
             editor.setValue(data)
           } else {
-            window.location.replace('#{baseURL}/edit/'+data._id)
+            window.location.replace("#{baseURL}/edit?resource=#{resource}&id="+data._id)
           }
         },
         error: handle_error,

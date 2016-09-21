@@ -7,18 +7,25 @@ var async = require('async')
 // var ensureLoggedIn = require('../middlewares/ensureLoggedIn')
 var checkResource = require('../middlewares/checkResource')
 var config = require('../server-config')
+var resources = require('../resources-config')
 var marked = require('marked')
 
 // -- Main pages -------------------------------------------------------------
 
 /* Home page */
 router.get('/', function (req, res, next) {
-  // var db = req.db
+  res.render('index', {
+    resources: resources
+  })
+})
+
+/* Readme */
+router.get('/readme', function (req, res, next) {
   fs.readFile('README.md', 'utf8', function (err, data) {
     if (err) data = ''
     var content = marked(data)
     content = content.replace(/<table>/g, '<table class="table">')
-    res.render('index', {
+    res.render('page', {
       content: content
     })
   })
@@ -26,7 +33,8 @@ router.get('/', function (req, res, next) {
 
 /* Load stuff we need for add/edit */
 var add_edit = function (req, res, next, params) {
-  var schema_file = 'resources/' + req.query.resource + '/schema.json'
+  var entity = req.query.entity ? req.query.entity : 'entry'
+  var schema_file = 'resources/' + req.query.resource + '/schemas/' + entity + '.json'
   async.parallel({
     schema: function (callback) {
       fs.readFile(schema_file, 'utf8', function (err, data) {
@@ -50,7 +58,20 @@ var add_edit = function (req, res, next, params) {
   )
 }
 
-/* GET add */
+/* Search, potentially in multiple resources */
+router.get('/search',
+  function (req, res, next) {
+    res.render('search', {
+      'search': {
+        'query': req.query.s,
+        'resources': req.query.resource ?  req.query.resource : []
+      },
+      'resources': resources
+    })
+  }
+)
+
+/* Add new entry */
 router.get('/add',
   // ensureLoggedIn(config.baseURL+'/login'),
   checkResource(),
@@ -62,7 +83,7 @@ router.get('/add',
   }
 )
 
-/* GET edit */
+/* Edit entry */
 router.get('/edit',
   // ensureLoggedIn(config.baseURL+'/login'),
   checkResource(),

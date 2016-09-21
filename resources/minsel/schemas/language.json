@@ -1,0 +1,43 @@
+{
+  "title": "Language",
+  "type": "object",
+  "required": [
+    "abbrev",
+    "name",
+    "class"
+  ],
+  "properties": {
+    "_id": {
+      "type": "string",
+      "title": "ID",
+      "propertyOrder": 1
+    },
+    "abbrev" : {
+      "type": "string",
+      "title": "Abbreviation"
+    },
+    "name" : {
+      "type": "string",
+      "title": "Name (English)"
+    },
+    "class" : {
+      "type": "string",
+      "title": "Language class",
+      "enum": [
+        "arabic",
+        "levantine-arabic",
+        "semitic",
+        "ethiopic"
+      ]
+    },
+    "comment" : {
+      "title": "Comment",
+      "type": "string"
+    },
+    "order" : {
+      "title": "Order",
+      "type": "number"
+    },
+  }
+
+}

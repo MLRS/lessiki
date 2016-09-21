@@ -1,0 +1,159 @@
+{
+  "format": "grid",
+  "title": "Entry",
+  "type": "object",
+  "required" : [
+    "lemma",
+    "pos",
+    "senses",
+    "etymology"
+  ],
+  "properties": {
+    "_id": {
+      "type": "string",
+      "title": "ID",
+      "propertyOrder": 1
+    },
+    "lemma": {
+      "title": "Lemma",
+      "type": "string"
+    },
+    "pos": {
+      "title": "POS",
+      "description": "Part of Speech",
+      "type": "string",
+      "enum": [
+        "ADJ",
+        "ADP",
+        "ADV",
+        "AUX",
+        "CONJ",
+        "DET",
+        "INTJ",
+        "NOUN",
+        "NUM",
+        "PART",
+        "PRON",
+        "PROPN",
+        "PUNCT",
+        "SCONJ",
+        "SYM",
+        "VERB",
+        "X"
+      ]
+    },
+    "root": {
+      "title": "Root",
+      "type": "object",
+      "required": [
+        "radicals"
+      ],
+      "properties": {
+        "radicals": {
+          "title": "Radicals",
+          "description": "C-C-C or C-C-C-C",
+          "type": "string"
+        },
+        "variant": {
+          "title": "Variant",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        }
+      }
+    },
+    "gender": {
+      "title": "Gender",
+      "type": "string",
+      "enum": [
+        "m",
+        "f"
+      ]
+    },
+    "transitive": {
+      "type": "boolean",
+      "format": "checkbox"
+    },
+    "intransitive": {
+      "type": "boolean",
+      "format": "checkbox"
+    },
+    "comment": {
+      "type": "string",
+      "title": "Comments",
+      "format": "textarea"
+    },
+    "senses": {
+      "title": "Word senses",
+      "type": "array",
+      "format": "tabs",
+      "items": {
+        "title": "Sense",
+        "type": "object",
+        "headerTemplate": "{{ i1 }}. {{ self.description }}",
+        "properties": {
+          "description" : {
+            "title": "Descriptions",
+            "description": "Different descriptions within the same sense",
+            "type": "array",
+            "format": "table",
+            "items": {
+              "type": "string",
+              "title": "Description"
+            }
+          },
+          "etymologies" : {
+            "title": "Usages in other languages",
+            "description": "Languages which share same sense",
+            "type": "array",
+            "format": "table",
+            "items": {
+              "type": "string",
+              "title": "Language"
+            }
+          }
+        }
+      }
+    },
+    "etymology": {
+      "title": "Etymology",
+      "type": "array",
+      "format": "table",
+      "items": {
+        "format": "grid",
+        "type": "object",
+        "title": "Etymological usage",
+        "properties": {
+          "language" : {
+            "type": "string",
+            "title": "Language"
+          },
+          "variant" : {
+            "type": "string",
+            "title": "Language variant"
+          },
+          "word_native" : {
+            "type": "string",
+            "title": "Word (native script)"
+          },
+          "word" : {
+            "type": "string",
+            "title": "Word (transcription)"
+          },
+          "comments" : {
+            "type": "string",
+            "title": "Comments"
+          },
+          "private_notes" : {
+            "type": "string",
+            "title": "Private notes"
+          },
+          "reference" : {
+            "type": "string",
+            "title": "Reference"
+          }
+        }
+      }
+    }
+  }
+}

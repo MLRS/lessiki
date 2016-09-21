@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1 Search for “#{search.query}”  
+    small in #{search.resources}
+  
+  div
+    ul.nav.nav-tabs(role='tablist')
+      for k,i in search.resources
+        li(role='presentation',class=(i==0)?'active':'')
+          a(href='#'+k, aria-controls=k, role='tab', data-toggle='tab')= resources[k].name
+            .badge ...
+
+    .tab-content
+      for k,i in search.resources
+          .tab-pane(id=k,role='tabpanel',class=(i==0)?'active':'')
+            .container TODO: results for #{k}
+
+  

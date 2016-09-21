@@ -1,8 +1,14 @@
-# Lessiki — A generic platform for lexica of Maltese
+# Lessiki — A platform for lexica of the Maltese language
 
 ## Naming
 
-Each dictionary or lexicon is a **resource** with a name e.g. `kaufmann` or `minsel`.
+- Each dictionary or lexicon is a **resource** with a name e.g. `kaufmann` or `minsel`
+- Configuration info for each resource is maintained in `resources-config.js`
+- Each resource can have multiple **entities**, where the default one is named **entry**.
+- Each entity corresponds to a collection in the database:
+  - The default **entry** entity has a collection with same name as resource, e.g. `minsel`
+  - Other entities are given collection names with pluralised suffixes, e.g. `minsel-languages`
+- JSON schemas must be specified for each entity, e.g. `resources/minsel/entry.json`, `resources/minsel/schemas/language.json` etc.
 
 ## Generic API
 
@@ -20,17 +26,17 @@ They are implemented in `routes/generic-api.js`
 ## Resource-Specific API
 
 Custom API methods for each resource can be added to the file `resources/<resource>/custom-api.js`.
-It should be OK to shadow the methods above, if that's the desired behaviour.
+It is OK to shadow the methods above.
 
 ## Pages
 
-| Path                                 | Description       |
-|:-------------------------------------|:------------------|
-| `/search?resource=<resource>`        | Search            |
-| `/index?resource=<resource>&id=<id>` | Show all entries  |
-| `/view?resource=<resource>&id=<id>`  | View single entry |
-| `/add?resource=<resource>`           | Create new entry  |
-| `/edit?resource=<resource>&id=<id>`  | Edit single entry |
+| Path      | Query parameters             | Description                                                   |
+|:----------|:-----------------------------|:--------------------------------------------------------------|
+| `/search` | `resource`*, `s`             | Search. `resource` can be specified multiple times.           |
+| `/index`  | `resource`, `id`             | Show all entries                                              |
+| `/view`   | `resource`, `id`             | View single entry                                             |
+| `/add`    | `resource`, [`entity`]       | Create new entry. If ommitted, `entity` defaults to `entry`.  |
+| `/edit`   | `resource`, [`entity`], `id` | Edit single entry. If ommitted, `entity` defaults to `entry`. |
 
 ## Installing
 
@@ -40,3 +46,19 @@ It should be OK to shadow the methods above, if that's the desired behaviour.
 1. Populate database
 1. Start with `pm2 start processes.json`
 1. Open <http://localhost:3002/>
+
+## Users
+
+Example document:
+
+```json
+{
+  "username" : "...",
+  "password" : "...",
+  "access" : ["kaufmann", "minsel"]
+}
+```
+
+Where
+ - `password` is an SHA-1 hash of your salted password
+ - `access` can also be `"all"` instead of a list

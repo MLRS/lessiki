@@ -6,4 +6,26 @@ block content
     h1 Lessiki
     p A platform for lexica of the Maltese language
 
-  != content
+    form(role="search",action=baseURL+"/search",method="GET")
+      
+      .form-group
+        .input-group
+          input(type="search",name="s",autofocus="true",placeholder="Search").form-control.input-lg
+          .input-group-btn
+            button(type="submit").btn.btn-primary.btn-lg
+              span.glyphicon.glyphicon-search
+      .form-group
+        for v,k in resources
+          label.checkbox-inline
+            input(type="checkbox",name="resource",value=k,checked)
+            = v.name
+
+  .container
+    h2 Current resources
+    ul
+      for v,k in resources
+        li
+          strong= v.name
+          |  
+          em= v.authors
+          |  (#{v.year})
