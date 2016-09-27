@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router()
 
-const collection_name = "kaufmann"
+const collection_name = 'kaufmann'
 
 /* Overrides default search */
 router.get('/search/',

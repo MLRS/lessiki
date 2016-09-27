@@ -111,7 +111,15 @@ app.use(function (req, res, next) {
 app.use('/', require('./routes/index'))
 
 // Custom APIs per resource
-app.use('/resources/kaufmann/', require('./resources/kaufmann/custom-api'))
+var resources = require('./resources-config')
+for (let resource in resources) {
+  let custom_api = './resources/' + resource + '/custom-api.js'
+  try {
+    app.use('/resources/' + resource + '/', require(custom_api))
+  } catch (err) {
+    // console.log('Not found: ' + custom_api)
+  }
+}
 
 // Generic API
 app.use('/resources/', require('./routes/generic-api'))

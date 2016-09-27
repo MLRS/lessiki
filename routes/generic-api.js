@@ -1,14 +1,22 @@
 var express = require('express')
 var router = express.Router()
 
+var resources = require('../resources-config')
+
 // -- Search Methods --------------------------------------------------------
 
 /* Search = GET /search */
 router.get('/:resource/search/',
   function (req, res, next) {
-    var collection = req.db.get(req.params.resource)
-    // TODO: handle regex or by default make everything substring
-    // TODO: handle unicode querystring
+    var collection
+    if (resources[req.params.resource]['collections']) {
+      collection = req.db.get(resources[req.params.resource]['collections']['entry'])
+    } else {
+      collection = req.db.get(req.params.resource)
+    }
+    for (let k in req.query) {
+      req.query[k] = new RegExp(req.query[k])
+    }
     collection.find(req.query, function (err, data) {
       if (err) {
         res.status(500).send(err)

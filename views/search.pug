@@ -9,11 +9,12 @@ block content
       for k,i in search.resources
         li(role='presentation',class=(i==0)?'active':'')
           a(href='#'+k, aria-controls=k, role='tab', data-toggle='tab')= resources[k].name
-            .badge ...
+            .badge= search.results[k].length
 
     .tab-content
       for k,i in search.resources
           .tab-pane(id=k,role='tabpanel',class=(i==0)?'active':'')
-            .container TODO: results for #{k}
+            .container
+              pre= JSON.stringify(search.results[k], null, 2)
 
   

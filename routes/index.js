@@ -6,9 +6,10 @@ var async = require('async')
 // var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn
 // var ensureLoggedIn = require('../middlewares/ensureLoggedIn')
 var checkResource = require('../middlewares/checkResource')
-var config = require('../server-config')
+// var config = require('../server-config')
 var resources = require('../resources-config')
 var marked = require('marked')
+var request = require('request')
 
 // -- Main pages -------------------------------------------------------------
 
@@ -58,15 +59,51 @@ var add_edit = function (req, res, next, params) {
   )
 }
 
+var zip = function (arr1, arr2) {
+  var out = {}
+  for (let k in arr1) {
+    out[arr1[k]] = arr2[k]
+  }
+  return out
+}
+
 /* Search, potentially in multiple resources */
+// TODO: paging
 router.get('/search',
   function (req, res, next) {
-    res.render('search', {
-      'search': {
-        'query': req.query.s,
-        'resources': req.query.resource ?  req.query.resource : []
-      },
-      'resources': resources
+    var search_resources = req.query.resource ? req.query.resource : []
+    var find = function (resource, callback) {
+      // TODO: making HTTP request is inefficient
+      var url = {
+        baseUrl: 'http://127.0.0.1:3002', // TODO make robust
+        url: '/resources/' + resource + '/search',
+        method: 'GET',
+        headers: {},
+        qs: {
+          lemma: req.query.s
+        }
+      }
+      request(url, function (err, res, body) {
+        if (err) {
+          callback(err)
+        } else {
+          callback(null, JSON.parse(body))
+        }
+      })
+    }
+    async.map(search_resources, find, function (err, results) {
+      if (err) {
+        res.status(500).send(err)
+        // console.log(err)
+      }
+      res.render('search', {
+        'search': {
+          'query': req.query.s,
+          'resources': search_resources,
+          'results': zip(search_resources, results)
+        },
+        'resources': resources
+      })
     })
   }
 )

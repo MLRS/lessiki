@@ -1,13 +1,20 @@
 # Lessiki — A platform for lexica of the Maltese language
 
-## Naming
+## Resources
 
 - Each dictionary or lexicon is a **resource** with a name e.g. `kaufmann` or `minsel`
 - Configuration info for each resource is maintained in `resources-config.js`
 - Each resource can have multiple **entities**, where the default one is named **entry**.
 - Each entity corresponds to a collection in the database:
-  - The default **entry** entity has a collection with same name as resource, e.g. `minsel`
-  - Other entities are given collection names with pluralised suffixes, e.g. `minsel-languages`
+  - For single-entity resources, a default collection is assumed with the same name as resource, e.g. `kaufmann`
+  - For multi-entity resources, collection names should be specified in `resources-config.js`, e.g.:
+  ```js
+  collections: {
+      entry: 'minsel.entries',
+      language: 'minsel.languages',
+      reference: 'minsel.references'
+  }
+  ```
 - JSON schemas must be specified for each entity, e.g. `resources/minsel/entry.json`, `resources/minsel/schemas/language.json` etc.
 
 ## Generic API
