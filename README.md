@@ -9,10 +9,20 @@
   - For single-entity resources, a default collection is assumed with the same name as resource, e.g. `kaufmann`
   - For multi-entity resources, collection names should be specified in `resources-config.js`, e.g.:
   ```js
-  collections: {
-      entry: 'minsel.entries',
-      language: 'minsel.languages',
-      reference: 'minsel.references'
+  minsel: {
+      ...,
+      entities: {
+          entry: {
+            collection: 'minsel.entries',
+            search_fields: ['lemma', 'senses.description']
+          },
+          language: {
+            collection: 'minsel.languages'
+          },
+          reference: {
+            collection: 'minsel.references'
+          }
+      }
   }
   ```
 - JSON schemas must be specified for each entity, e.g. `resources/minsel/entry.json`, `resources/minsel/schemas/language.json` etc.
@@ -22,18 +32,19 @@
 These methods do not need to be implemented for each resource.
 They are implemented in `routes/generic-api.js`
 
-| Method | Path                           | Description           | Notes                                                           |
-|:-------|:-------------------------------|:----------------------|:----------------------------------------------------------------|
-| GET    | `/resources/<resource>/search` | Search                | Use actual field names in query string, e.g. `?lemma=abbanduna` |
-| POST   | `/resources/<resource>/`       | Create new entry      |                                                                 |
-| GET    | `/resources/<resource>/<id>`   | Read single entry     |                                                                 |
-| POST   | `/resources/<resource>/<id>`   | Update existing entry |                                                                 |
-| DELETE | `/resources/<resource>/<id>`   | Delete entry          |                                                                 |
+| Method | Path                           | Description           | Notes                                                                                                                                                                                                                                       |
+|:-------|:-------------------------------|:----------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| GET    | `/resources/<resource>/search` | Search                | Supports `s` parameter which translates to fields in `entities.entry.search_fields` when present, else just the `lemma` field.<br/>Explicit field names also supported, e.g. `?definitions.gloss=Fleisch`<br/>Values are substring-matched. |
+| POST   | `/resources/<resource>/`       | Create new entry      |                                                                                                                                                                                                                                             |
+| GET    | `/resources/<resource>/<id>`   | Read single entry     |                                                                                                                                                                                                                                             |
+| POST   | `/resources/<resource>/<id>`   | Update existing entry |                                                                                                                                                                                                                                             |
+| DELETE | `/resources/<resource>/<id>`   | Delete entry          |                                                                                                                                                                                                                                             |
 
 ## Resource-Specific API
 
 Custom API methods for each resource can be added to the file `resources/<resource>/custom-api.js`.
-It is OK to shadow the methods above.
+In this way it is possible to shadow the methods above.
+Note that the `search` command should at least support the `s` query parameter.
 
 ## Pages
 

@@ -11,10 +11,17 @@ module.exports = {
     authors: ['Martin R. Zammit', 'Saviour Sam Agius', 'Kurstin Gatt'],
     year: '2015–',
     license: null,
-    collections: {
-      entry: 'minsel.entries',
-      language: 'minsel.languages',
-      reference: 'minsel.references'
+    entities: {
+      entry: {
+        collection: 'minsel.entries',
+        search_fields: ['lemma', 'senses.description']
+      },
+      language: {
+        collection: 'minsel.languages'
+      },
+      reference: {
+        collection: 'minsel.references'
+      }
     }
   }
 }

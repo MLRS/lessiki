@@ -9,17 +9,37 @@ var resources = require('../resources-config')
 router.get('/:resource/search/',
   function (req, res, next) {
     var collection
-    if (resources[req.params.resource]['collections']) {
-      collection = req.db.get(resources[req.params.resource]['collections']['entry'])
+    var search_fields = []
+    if (resources[req.params.resource].entities) {
+      collection = req.db.get(resources[req.params.resource].entities.entry.collection)
+      search_fields = resources[req.params.resource].entities.entry.search_fields
     } else {
       collection = req.db.get(req.params.resource)
+      search_fields = ['lemma']
     }
+
+    var conditions = {}
+    // s param
+    if (req.query.hasOwnProperty('s')) {
+      let or = []
+      for (let i in search_fields) {
+        let obj = {}
+        obj[search_fields[i]] = new RegExp(req.query.s)
+        or.push(obj)
+      }
+      conditions['$or'] = or
+      delete req.query.s
+    }
+    // any other fields as params
     for (let k in req.query) {
-      req.query[k] = new RegExp(req.query[k])
+      conditions[k] = new RegExp(req.query[k])
     }
-    collection.find(req.query, function (err, data) {
+
+    console.log(conditions)
+    collection.find(conditions, function (err, data) {
       if (err) {
-        res.status(500).send(err)
+        console.error(err)
+        return res.status(500).send(err.message)
       }
       res.json(data)
     })
@@ -37,7 +57,8 @@ router.post('/:resource/',
     var collection = req.db.get(req.params.resource)
     collection.insert(req.body, function (err, data) {
       if (err) {
-        res.status(500).send(err)
+        console.error(err)
+        return res.status(500).send(err.message)
       }
       res.json(data)
     })
@@ -49,7 +70,8 @@ router.get('/:resource/',
     var collection = req.db.get(req.params.resource)
     collection.find({}, function (err, data) {
       if (err) {
-        res.status(500).send(err)
+        console.error(err)
+        return res.status(500).send(err.message)
       }
       res.json(data)
     })
@@ -61,7 +83,8 @@ router.get('/:resource/:id',
     var collection = req.db.get(req.params.resource)
     collection.findOne(req.params.id, function (err, data) {
       if (err) {
-        res.status(500).send(err)
+        console.error(err)
+        return res.status(500).send(err.message)
       }
       res.json(data)
     })
@@ -78,11 +101,13 @@ router.post('/:resource/:id',
     var collection = req.db.get(req.params.resource)
     collection.update(req.params.id, req.body, function (err) {
       if (err) {
-        res.status(500).send(err)
+        console.error(err)
+        return res.status(500).send(err.message)
       }
       collection.findOne(req.params.id, function (err, data) {
         if (err) {
-          res.status(500).send(err)
+          console.error(err)
+          return res.status(500).send(err.message)
         }
         res.json(data)
       })
@@ -98,7 +123,8 @@ router.delete('/:resource/:id',
     var collection = req.db.get(req.params.resource)
     collection.remove(req.params.id, function (err) {
       if (err) {
-        res.status(500).send(err)
+        console.error(err)
+        return res.status(500).send(err.message)
       }
       res.end()
     })

@@ -1,9 +1,9 @@
 extends layout
 
 block content
-  h1 Search for “#{search.query}”  
-    small in #{search.resources}
-  
+  h1 Search for “#{search.query}”
+    small   in #{search.resources}
+
   div
     ul.nav.nav-tabs(role='tablist')
       for k,i in search.resources
@@ -14,7 +14,10 @@ block content
     .tab-content
       for k,i in search.resources
           .tab-pane(id=k,role='tabpanel',class=(i==0)?'active':'')
-            .container
-              pre= JSON.stringify(search.results[k], null, 2)
-
-  
+            .container.striped
+              for r in search.results[k]
+                .row
+                  .col-sm-2
+                    strong= r.lemma
+                  .col-sm-10
+                    pre.small.lang-json= JSON.stringify(r, null, 2)
