@@ -15,7 +15,7 @@ var request = require('request')
 
 /* Home page */
 router.get('/', function (req, res, next) {
-  res.render('index', {
+  res.render('home', {
     resources: resources
   })
 })
@@ -122,7 +122,7 @@ router.get('/search',
         console.error(err)
         return res.status(500).send(err.message)
       }
-      res.render('search', {
+      res.render('search-multi', {
         'search': {
           'query': req.query.s,
           'resources': search_resources,

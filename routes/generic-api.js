@@ -3,10 +3,24 @@ var router = express.Router()
 
 var resources = require('../resources-config')
 
+// -- Search Page -----------------------------------------------------------
+
+/* Search page = GET / */
+router.get('/:resource/',
+  function (req, res, next) {
+    res.render('resource-index', {
+      'search': {
+        'query': req.query.s,
+        'results': [] // TODO
+      },
+      'resource': resources[req.params.resource]
+    })
+  })
+
 // -- Search Methods --------------------------------------------------------
 
 /* Search = GET /search */
-router.get('/:resource/search/',
+router.get('/:resource/search',
   function (req, res, next) {
     var collection
     var search_fields = []
@@ -49,7 +63,7 @@ router.get('/:resource/search/',
 
 /* Create = POST / */
 /* Content-Type: application/json */
-router.post('/:resource/',
+router.post('/:resource',
   // passport.authenticate('basic', {
   //   session: false
   // }),
@@ -65,17 +79,17 @@ router.post('/:resource/',
   })
 
 /* Index = GET / */
-router.get('/:resource/',
-  function (req, res, next) {
-    var collection = req.db.get(req.params.resource)
-    collection.find({}, function (err, data) {
-      if (err) {
-        console.error(err)
-        return res.status(500).send(err.message)
-      }
-      res.json(data)
-    })
-  })
+// router.get('/:resource/',
+//   function (req, res, next) {
+//     var collection = req.db.get(req.params.resource)
+//     collection.find({}, function (err, data) {
+//       if (err) {
+//         console.error(err)
+//         return res.status(500).send(err.message)
+//       }
+//       res.json(data)
+//     })
+//   })
 
 /* Read = GET /:id */
 router.get('/:resource/:id',

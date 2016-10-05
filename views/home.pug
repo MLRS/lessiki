@@ -25,7 +25,8 @@ block content
     ul
       for v,k in resources
         li
-          strong= v.name
+          a(href=baseURL+"/resources/"+k)
+            strong= v.name
           |  
           em= v.authors
           |  (#{v.year})
