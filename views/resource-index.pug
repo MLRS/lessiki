@@ -4,20 +4,37 @@ block content
   h1= resource.name
   p.lead= resource.description
   
-  ul
-    li= resource.authors
-    li= resource.year
-    li= resource.license
+  dl.dl-horizontal
+    if resource.authors
+      dt Authors
+      dd= resource.authors.join(", ")
+    if resource.year
+      dt Year
+      dd= resource.year
+    if resource.license
+      dt License
+      dd= resource.license
   
-  if search.query
-    h2 Search for “#{search.query}”
-      .badge= search.results.length
-              |  results
-    div
-      .container.striped
-        for r in search.results
-          .row
-            .col-sm-2
-              strong= r.lemma
-            .col-sm-10
-              pre.small.lang-json= JSON.stringify(r, null, 2)
+  .row
+    .col-sm-6
+      form(role="search",action=baseURL+"/search",method="GET")
+        input.hidden(name="resource",value=resource.key)
+        .form-group
+          .input-group
+            input(type="search",name="s",autofocus="true",placeholder="Search in this resource").form-control.input-lg
+            .input-group-btn
+              button(type="submit").btn.btn-primary.btn-lg
+                span.glyphicon.glyphicon-search
+
+  //- if search.query
+  //-   h2 Search for “#{search.query}”
+  //-     .badge= search.results.length
+  //-             |  results
+  //-   div
+  //-     .container.striped
+  //-       for r in search.results
+  //-         .row
+  //-           .col-sm-2
+  //-             strong= r.lemma
+  //-           .col-sm-10
+  //-             pre.small.lang-json= JSON.stringify(r, null, 2)

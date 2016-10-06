@@ -8,12 +8,15 @@ var resources = require('../resources-config')
 /* Search page = GET / */
 router.get('/:resource/',
   function (req, res, next) {
+    var res_obj = resources[req.params.resource]
+    res_obj['key'] = req.params.resource
     res.render('resource-index', {
       'search': {
         'query': req.query.s,
         'results': [] // TODO
       },
-      'resource': resources[req.params.resource]
+      'resources': resources,
+      'resource': res_obj
     })
   })
 

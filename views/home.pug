@@ -4,29 +4,45 @@ block content
 
   div.jumbotron(style="margin-top:2em")
     h1 Lessiki
-    p A platform for lexica of the Maltese language
+    p A platform for lexica of the Maltese language.
 
     form(role="search",action=baseURL+"/search",method="GET")
-      
       .form-group
         .input-group
-          input(type="search",name="s",autofocus="true",placeholder="Search").form-control.input-lg
+          input(type="search",name="s",autofocus="true",placeholder="Search in multiple resources").form-control.input-lg
           .input-group-btn
+            //- add data-actions-box="true" when many resources...
+            select.selectpicker(
+              name="resource",
+              multiple,
+              title="Select resources",
+              data-selected-text-format="static",
+              data-style="btn-default btn-lg"
+            )
+              for v,k in resources
+                option(value=k,selected)= v.name
             button(type="submit").btn.btn-primary.btn-lg
               span.glyphicon.glyphicon-search
-      .form-group
-        for v,k in resources
-          label.checkbox-inline
-            input(type="checkbox",name="resource",value=k,checked)
-            = v.name
 
-  .container
-    h2 Current resources
-    ul
-      for v,k in resources
-        li
-          a(href=baseURL+"/resources/"+k)
-            strong= v.name
-          |  
-          em= v.authors
-          |  (#{v.year})
+  .page-header
+    h1 Current resources
+  p These resources are currently hosted in Lessiki.
+  .row
+    for v,k in resources
+      .col-sm-6
+        .panel.panel-default
+          .panel-heading
+            a(href=baseURL+"/resources/"+k)
+              h3.panel-title= v.name
+          .panel-body
+            p
+              em= v.authors.join(", ")
+                |  (#{v.year})
+            p= v.description
+            if v.license
+              p.text-muted License: #{v.license}
+
+  .page-header
+    h1 About
+  p Part of <a href="http://mlrs.research.um.edu.mt/">MLRS</a>. Built and maintained by <a href="http://www.cse.chalmers.se/~cajohn/">John J. Camilleri</a>.
+  
