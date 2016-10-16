@@ -124,9 +124,8 @@ for (let resource in resources) {
 // Generic API
 app.use('/resources/', require('./routes/generic-api'))
 
-// http://stackoverflow.com/a/27464258/98600
-// app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist/'))
-app.use('/module', express.static(__dirname + '/node_modules/'))
+// Load bower stuff
+app.use('/module', express.static(__dirname + '/bower_components/'))
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

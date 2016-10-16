@@ -14,10 +14,62 @@ block content
     .tab-content
       for k,i in search.resources
           .tab-pane(id=k,role='tabpanel',class=(i==0)?'active':'')
-            .container.striped
-              for r in search.results[k]
-                .row
-                  .col-sm-2
-                    strong= r.lemma
-                  .col-sm-10
-                    pre.small.lang-json= JSON.stringify(r, null, 2)
+            table.table.table-striped
+              thead
+              tbody
+              //- for r in search.results[k]
+              //-   .row
+              //-     .col-sm-2
+              //-       strong= r.lemma
+              //-     .col-sm-10
+              //-       pre.small.lang-json= JSON.stringify(r, null, 2)
+
+  script.
+    var results = !{JSON.stringify(search.results, null, 2)}
+    $(function() {
+      var ignore_fields = ['_id']
+      for (var resource in results) {
+        var resource_results = results[resource]
+        var headings = ['lemma']
+        for (var rx in resource_results) {
+          var item = resource_results[rx]
+          for (var field in item) {
+            if (headings.indexOf(field) === -1 && ignore_fields.indexOf(field) === -1) {
+              headings.push(field)
+            }
+          }
+        }
+        var row = $('<tr>').appendTo($('.tab-pane#' + resource + ' thead'))
+        for (var hx in headings) {
+          var field = headings[hx]
+          $('<th>').text(field).appendTo(row)
+        }
+        for (var rx in resource_results) {
+          var item = resource_results[rx]
+          var row = $('<tr>').appendTo($('.tab-pane#' + resource + ' tbody'))
+          for (var hx in headings) {
+            var field = headings[hx]
+            var cell = $('<td>').appendTo(row)
+            if (item.hasOwnProperty(field)) {
+              var value = item[field]
+              if (typeof value === 'object') { // includes arrays
+                //- cell.text(JSON.stringify(value))
+
+                //- var node = JsonHuman.format(value, {
+                //-   showArrayIndex: false
+                //- });
+                //- cell[0].appendChild(node)
+
+                var formatter = new JSONFormatter(value, 3)
+                cell[0].appendChild(formatter.render())
+
+              } else {
+                cell.text(value)
+              }
+            } else {
+              cell.text('-')
+            }
+          }
+        }
+      }
+    });

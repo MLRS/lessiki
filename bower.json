@@ -1,0 +1,26 @@
+{
+  "name": "lessiki",
+  "description": "Generic platform for lexica of Maltese",
+  "main": "app.js",
+  "authors": [
+    "John J. Camilleri"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/johnjcamilleri/lessiki",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "json-human": "^0.1.1",
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.1.1",
+    "json-editor": "^0.7.28",
+    "bootstrap-select": "^1.11.2",
+    "json-formatter-js": "^1.2.0"
+  }
+}
