@@ -1,0 +1,56 @@
+.jh-key, .jh-value{
+ margin: 0;
+ padding: 0.2em;
+}
+.jh-key {
+ padding-right: 1em;
+}
+
+.jh-type-number{
+    text-align: center;
+    color: #5286BC;
+}
+
+.jh-type-bool-true{
+    text-align: center;
+    color: #5A811C;
+}
+
+.jh-type-bool-false{
+    text-align: center;
+    color: #D45317;
+}
+
+.jh-type-string{
+    font-style: italic;
+    color: #6E6E6E;
+}
+
+.jh-array-key{
+    font-style: italic;
+    font-size: small;
+    text-align: center;
+}
+
+.jh-object-key, .jh-array-key{
+    color: #444;
+    vertical-align: top;
+}
+
+th.jh-key{
+ text-align: left;
+}
+
+.jh-type-object {
+ border-bottom: 1px solid #ddd;
+}
+
+.jh-empty{
+ font-style: italic;
+ color: #999;
+ font-size: small;
+}
+
+td[data-field=root] .jh-value {
+    white-space:nowrap;
+}

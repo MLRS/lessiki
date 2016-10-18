@@ -27,7 +27,7 @@ block content
   script.
     var results = !{JSON.stringify(search.results, null, 2)}
     $(function() {
-      var ignore_fields = ['_id']
+      var ignore_fields = ['_id','gabra_id']
       for (var resource in results) {
         var resource_results = results[resource]
         var headings = ['lemma']
@@ -39,30 +39,24 @@ block content
             }
           }
         }
-        var row = $('<tr>').appendTo($('.tab-pane#' + resource + ' thead'))
+        var row = $('<tr>').appendTo($('.tab-pane#' + resource + ' thead').first())
         for (var hx in headings) {
           var field = headings[hx]
           $('<th>').text(field).appendTo(row)
         }
         for (var rx in resource_results) {
           var item = resource_results[rx]
-          var row = $('<tr>').appendTo($('.tab-pane#' + resource + ' tbody'))
+          var row = $('<tr>').appendTo($('.tab-pane#' + resource + ' tbody').first())
           for (var hx in headings) {
             var field = headings[hx]
-            var cell = $('<td>').appendTo(row)
+            var cell = $('<td>').attr('data-field',field).appendTo(row)
             if (item.hasOwnProperty(field)) {
               var value = item[field]
               if (typeof value === 'object') { // includes arrays
-                //- cell.text(JSON.stringify(value))
-
-                //- var node = JsonHuman.format(value, {
-                //-   showArrayIndex: false
-                //- });
-                //- cell[0].appendChild(node)
-
-                var formatter = new JSONFormatter(value, 3)
-                cell[0].appendChild(formatter.render())
-
+                var node = JsonHuman.format(value, {
+                  showArrayIndex: false
+                })
+                cell[0].appendChild(node)
               } else {
                 cell.text(value)
               }
