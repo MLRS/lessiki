@@ -1,9 +1,9 @@
 // Configuration information for each resource
 module.exports = {
-  kaufmann: {
+  petersenkaufmann: {
     name: 'Maltese-German Dictionary',
     description: '',
-    authors: ['Wolfgang Kaufmann', 'Uwe Petersen'],
+    authors: ['Uwe Petersen', 'Wolfgang Kaufmann'],
     year: '1996',
     license: 'CC BY-NC-SA'
   },
