@@ -3,7 +3,7 @@ var path = require('path')
 var logger = require('morgan')
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
-// var flash = require('connect-flash')
+var flash = require('connect-flash')
 
 var app = express()
 
@@ -53,11 +53,12 @@ app.use(function (req, res, next) {
   }
 })
 
-// app.use(require('express-session')({
-//   secret: config.sessionSecret,
-//   resave: false,
-//   saveUninitialized: false
-// }))
+// Sessions needed for connect-flash
+app.use(require('express-session')({
+  secret: config.sessionSecret,
+  resave: false,
+  saveUninitialized: false
+}))
 
 // Database
 var monk = require('monk')
@@ -69,44 +70,44 @@ app.use(function (req, res, next) {
 })
 
 // Authentication
-// var passport = require('passport')
-// var LocalStrategy = require('passport-local').Strategy
-// passport.use(new LocalStrategy({
-//     session: true
-//   },
-//   function (username, password, done) {
-//     db.get('users').findOne({username: username}, function (err, user) {
-//       var salted = config.salt + password
-//       var shasum = require('crypto').createHash('sha1')
-//       var hashed = shasum.update(salted).digest('hex')
-//       if (err) { return done(err) }
-//       if (!user) { return done(null, false, {message: 'Unknown user.'}) } // TODO show these messages
-//       if (user.password !== hashed) { return done(null, false, {message: 'Incorrect password.'}) } // TODO show these messages
-//       return done(null, user)
-//     })
-//   }
-// ))
-// passport.serializeUser(function (user, cb) {
-//   cb(null, user._id)
-// })
-// passport.deserializeUser(function (id, cb) {
-//   db.get('users').findOne(id, function (err, user) {
-//     if (err) { return cb(err) }
-//     cb(null, user)
-//   })
-// })
-// app.use(passport.initialize())
-// app.use(passport.session())
+var passport = require('passport')
+var LocalStrategy = require('passport-local').Strategy
+passport.use(new LocalStrategy({
+    session: true
+  },
+  function (username, password, done) {
+    db.get('users').findOne({username: username}, function (err, user) {
+      var salted = config.salt + password
+      var shasum = require('crypto').createHash('sha1')
+      var hashed = shasum.update(salted).digest('hex')
+      if (err) { return done(err) }
+      if (!user) { return done(null, false, {message: 'Unknown user'}) }
+      if (user.password !== hashed) { return done(null, false, {message: 'Incorrect password'}) }
+      return done(null, user)
+    })
+  }
+))
+passport.serializeUser(function (user, cb) {
+  cb(null, user._id)
+})
+passport.deserializeUser(function (id, cb) {
+  db.get('users').findOne(id, function (err, user) {
+    if (err) { return cb(err) }
+    cb(null, user)
+  })
+})
+app.use(passport.initialize())
+app.use(passport.session())
 
 // Make user info available to templates
-// app.use(function (req, res, next) {
-//   if (req.user) {
-//     res.locals.user = req.user
-//   }
-//   next()
-// })
+app.use(function (req, res, next) {
+  if (req.user) {
+    res.locals.user = req.user
+  }
+  next()
+})
 
-// app.use(flash())
+app.use(flash())
 
 app.use('/', require('./routes/index'))
 
@@ -117,7 +118,7 @@ for (let resource in resources) {
   try {
     app.use('/resources/' + resource + '/', require(custom_api))
   } catch (err) {
-    // console.log('Not found: ' + custom_api)
+    console.error('Not found: ' + custom_api)
   }
 }
 

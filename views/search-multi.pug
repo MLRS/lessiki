@@ -56,6 +56,21 @@ block content
               cell.text('-')
             }
           }
+          // Add edit button
+          if (#{user ? true : false}) {
+            var edit_link = '/edit?' + $.param({
+              resource: resource,
+              entity: 'entry',
+              id: item['_id']
+            })
+            row.find('td').first().append(
+              ' ',
+              $('<a>')
+                .addClass('btn btn-warning btn-xs')
+                .attr('href', edit_link)
+                .html('<span class="glyphicon glyphicon-pencil"></span> Edit')
+            )
+          }
         }
       }
     })

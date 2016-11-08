@@ -2,11 +2,11 @@ var express = require('express')
 var router = express.Router()
 var fs = require('fs')
 var async = require('async')
-// var passport = require('passport')
+var passport = require('passport')
 // var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn
 // var ensureLoggedIn = require('../middlewares/ensureLoggedIn')
 var checkResource = require('../middlewares/checkResource')
-// var config = require('../server-config')
+var config = require('../server-config')
 var resources = require('../resources-config')
 var marked = require('marked')
 var request = require('request')
@@ -154,34 +154,34 @@ router.get('/search',
 
 // -- Login stuff ------------------------------------------------------------
 
-// /* GET login */
-// router.get('/login',
-//   function (req, res, next) {
-//     res.render('login', {
-//       title: 'Login',
-//       messages: req.flash()
-//     })
-//   }
-// )
-//
-// /* POST login */
-// router.post('/login',
-//   passport.authenticate('local', {
-//     successReturnToOrRedirect: config.baseURL+'/', // Allows redirection to original dest
-//     failureRedirect: config.baseURL+'/login',
-//     failureFlash: true
-//   }),
-//   function(req, res) {
-//     res.redirect(config.baseURL+'/')
-//   }
-// )
-//
-// /* GET logout */
-// router.get('/logout',
-//   function (req, res) {
-//     req.logout()
-//     res.redirect(config.baseURL+'/')
-//   }
-// )
+/* GET login */
+router.get('/login',
+  function (req, res, next) {
+    res.render('login', {
+      title: 'Login',
+      messages: req.flash()
+    })
+  }
+)
+
+/* POST login */
+router.post('/login',
+  passport.authenticate('local', {
+    successReturnToOrRedirect: config.baseURL + '/', // Allows redirection to original dest
+    failureRedirect: config.baseURL + '/login',
+    failureFlash: true
+  }),
+  function (req, res) {
+    res.redirect(config.baseURL + '/')
+  }
+)
+
+/* GET logout */
+router.get('/logout',
+  function (req, res) {
+    req.logout()
+    res.redirect(config.baseURL + '/')
+  }
+)
 
 module.exports = router
