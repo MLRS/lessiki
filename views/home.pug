@@ -1,10 +1,27 @@
 extends layout
 
 block content
+  
+  - var total_entries = 0
+  if entry_counts
+    for v,k in entry_counts
+      - total_entries += v
+  else
+    - total_entries = '?'
 
   div.jumbotron(style="margin-top:2em")
-    h1 Lessiki
-    p A platform for lexica of the Maltese language.
+    h1 Lessiki  
+      small A platform for lexica of Maltese
+    p.lead
+      em Lessiki
+      |  is a general, flexible system for storing lexical resources related to the Maltese language.
+      | It was set up in order to help us digitise and preserve the various resources available.
+      | It currently hosts  
+      span.label.label-primary= Object.keys(resources).length
+      |  resources, containing a total of  
+      span.label.label-info= total_entries
+      |  entries.
+      | If you have a resource you can contribute, do <a href="http://www.cse.chalmers.se/~cajohn/">get in touch</a> and help us build a rich set of digital resources for Maltese.
 
     form(role="search",action=baseURL+"/search",method="GET")
       .form-group
@@ -16,7 +33,8 @@ block content
               name="resource",
               multiple,
               title="Select resources",
-              data-selected-text-format="static",
+              data-selected-text-format="count",
+              data-count-selected-text="{0} resources selected",
               data-style="btn-default btn-lg"
             )
               for v,k in resources
@@ -25,16 +43,14 @@ block content
               span.glyphicon.glyphicon-search
 
   .page-header
-    h1 Current resources
-  p These resources are currently hosted in Lessiki.
+    h2 Current resources
   .row
     for v,k in resources
       .col-sm-6
-        .panel.panel-default
-          .panel-heading
-            a(href=baseURL+"/resources/"+k)
-              h3.panel-title= v.name
-          .panel-body
+        .media
+          .media-body
+            h4.media-heading
+              a(href=baseURL+"/resources/"+k)= v.name
             p
               em= v.authors.join(", ")
                 |  (#{v.year})
@@ -43,6 +59,7 @@ block content
               p.text-muted License: #{v.license}
 
   .page-header
-    h1 About
-  p Part of <a href="http://mlrs.research.um.edu.mt/">MLRS</a>. Built and maintained by <a href="http://www.cse.chalmers.se/~cajohn/">John J. Camilleri</a>.
-  
+    h2 About
+  p
+    | Lessiki is part of the Maltese Language Resource Server (<a href="http://mlrs.research.um.edu.mt/">MLRS</a>).
+    | It was built and is maintained by <a href="http://www.cse.chalmers.se/~cajohn/">John J. Camilleri</a>.

@@ -25,6 +25,9 @@ html(lang="en")
     link(rel='stylesheet', href=baseURL+'/css/json.human.css')
 
     style.
+      .panel-body h3 {
+        margin-top: 10px;
+      }
       span[data-toggle] {
         border-bottom: 1px dotted #ccc;
       }
@@ -93,14 +96,15 @@ html(lang="en")
           ul.nav.navbar-nav
             li
               a(href=baseURL+"/readme") Readme
-            li.dropdown
-              a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
-                |  Resources
-                span.caret
-              ul.dropdown-menu
-                for v,k in resources
-                  li
-                    a(href=baseURL+"/resources/"+k)= v.name
+            if resources
+              li.dropdown
+                a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
+                  |  Resources
+                  span.caret
+                ul.dropdown-menu
+                  for v,k in resources
+                    li
+                      a(href=baseURL+"/resources/"+k)= v.name
             //- - if (!user)
             //-   li
             //-     a(href=baseURL+"/login") Login

@@ -15,9 +15,26 @@ var request = require('request')
 
 /* Home page */
 router.get('/', function (req, res, next) {
-  res.render('home', {
-    resources: resources
-  })
+  async.mapValues(resources,
+    function (resource, key, cb) {
+      var collection
+      if (resource.entities) {
+        collection = req.db.get(resource.entities.entry.collection)
+      } else {
+        collection = req.db.get(key)
+      }
+      collection.count(null, null, cb)
+    },
+    function (err, result) {
+      if (err) {
+        console.error(err)
+      }
+      res.render('home', {
+        resources: resources,
+        entry_counts: result // could be null
+      })
+    }
+  )
 })
 
 /* Readme */
@@ -27,7 +44,8 @@ router.get('/readme', function (req, res, next) {
     var content = marked(data)
     content = content.replace(/<table>/g, '<table class="table">')
     res.render('page', {
-      content: content
+      content: content,
+      resources: resources
     })
   })
 })
@@ -123,12 +141,12 @@ router.get('/search',
         return res.status(500).send(err.message)
       }
       res.render('search-multi', {
-        'search': {
-          'query': req.query.s,
-          'resources': search_resources,
-          'results': zip(search_resources, results)
+        search: {
+          query: req.query.s,
+          resources: search_resources,
+          results: zip(search_resources, results)
         },
-        'resources': resources
+        resources: resources
       })
     })
   }

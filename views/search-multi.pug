@@ -10,20 +10,12 @@ block content
         li(role='presentation',class=(i==0)?'active':'')
           a(href='#'+k, aria-controls=k, role='tab', data-toggle='tab')= resources[k].name
             .badge= search.results[k].length
-
     .tab-content
       for k,i in search.resources
           .tab-pane(id=k,role='tabpanel',class=(i==0)?'active':'')
             table.table.table-striped
               thead
               tbody
-              //- for r in search.results[k]
-              //-   .row
-              //-     .col-sm-2
-              //-       strong= r.lemma
-              //-     .col-sm-10
-              //-       pre.small.lang-json= JSON.stringify(r, null, 2)
-
   script.
     var results = !{JSON.stringify(search.results, null, 2)}
     $(function() {
@@ -66,4 +58,4 @@ block content
           }
         }
       }
-    });
+    })

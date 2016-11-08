@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router()
 
-const collection_name = 'kaufmann'
+const collection_name = 'petersenkaufmann'
 
 // http://stackoverflow.com/a/1026087/98600
 function capitalizeFirstLetter (string) {
