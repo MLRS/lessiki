@@ -21,20 +21,10 @@ block content
         input.hidden(name="resource",value=resource.key)
         .form-group
           .input-group
-            input(type="search",name="s",autofocus="true",placeholder="Search in this resource").form-control.input-lg
+            input(type="search",name="s",autofocus="true",placeholder="Search in this resource").form-control.input
             .input-group-btn
-              button(type="submit").btn.btn-primary.btn-lg
+              button(type="submit").btn.btn-primary.btn
                 span.glyphicon.glyphicon-search
-
-  //- if search.query
-  //-   h2 Search for “#{search.query}”
-  //-     .badge= search.results.length
-  //-             |  results
-  //-   div
-  //-     .container.striped
-  //-       for r in search.results
-  //-         .row
-  //-           .col-sm-2
-  //-             strong= r.lemma
-  //-           .col-sm-10
-  //-             pre.small.lang-json= JSON.stringify(r, null, 2)
+    .col-sm-6
+      a.btn.btn-success(href=baseURL+"/edit?resource="+resource.key)
+        +icon('plus', 'Add new entry')

@@ -2,6 +2,7 @@ var express = require('express')
 var router = express.Router()
 
 var resources = require('../resources-config')
+var checkAccess = require('../middlewares/checkAccess')
 
 // -- Search Page -----------------------------------------------------------
 
@@ -52,7 +53,7 @@ router.get('/:resource/search',
       conditions[k] = new RegExp(req.query[k])
     }
 
-    console.log(conditions)
+    // console.log(conditions)
     collection.find(conditions, function (err, data) {
       if (err) {
         console.error(err)
@@ -67,9 +68,7 @@ router.get('/:resource/search',
 /* Create = POST / */
 /* Content-Type: application/json */
 router.post('/:resource',
-  // passport.authenticate('basic', {
-  //   session: false
-  // }),
+  checkAccess(),
   function (req, res, next) {
     var collection = req.db.get(req.params.resource)
     collection.insert(req.body, function (err, data) {
@@ -111,9 +110,7 @@ router.get('/:resource/:id',
 /* Content-Type: application/json */
 /* _id in body should match :id or be omitted (otherwise will fail) */
 router.post('/:resource/:id',
-  // passport.authenticate('basic', {
-  //   session: false
-  // }),
+  checkAccess(),
   function (req, res, next) {
     var collection = req.db.get(req.params.resource)
     collection.update(req.params.id, req.body, function (err) {
@@ -133,9 +130,7 @@ router.post('/:resource/:id',
 
 /* Delete = DELETE /:id */
 router.delete('/:resource/:id',
-  // passport.authenticate('basic', {
-  //   session: false
-  // }),
+  checkAccess(),
   function (req, res, next) {
     var collection = req.db.get(req.params.resource)
     collection.remove(req.params.id, function (err) {

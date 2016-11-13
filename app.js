@@ -118,7 +118,7 @@ for (let resource in resources) {
   try {
     app.use('/resources/' + resource + '/', require(custom_api))
   } catch (err) {
-    console.error('Not found: ' + custom_api)
+    // console.log('Not found: ' + custom_api)
   }
 }
 

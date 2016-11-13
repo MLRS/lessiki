@@ -3,9 +3,8 @@ var router = express.Router()
 var fs = require('fs')
 var async = require('async')
 var passport = require('passport')
-// var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn
-// var ensureLoggedIn = require('../middlewares/ensureLoggedIn')
 var checkResource = require('../middlewares/checkResource')
+var checkAccess = require('../middlewares/checkAccess')
 var config = require('../server-config')
 var resources = require('../resources-config')
 var marked = require('marked')
@@ -80,8 +79,8 @@ var add_edit = function (req, res, next, params) {
 
 /* Add new entry */
 router.get('/add',
-  // ensureLoggedIn(config.baseURL+'/login'),
   checkResource(),
+  // checkAccess(), TODO: re-enable
   function (req, res, next) {
     add_edit(req, res, next, {
       'title': 'New entry',
@@ -92,8 +91,8 @@ router.get('/add',
 
 /* Edit entry */
 router.get('/edit',
-  // ensureLoggedIn(config.baseURL+'/login'),
   checkResource(),
+  // checkAccess(), TODO: re-enable
   function (req, res, next) {
     add_edit(req, res, next, {
       'title': 'Edit entry',
@@ -159,7 +158,8 @@ router.get('/login',
   function (req, res, next) {
     res.render('login', {
       title: 'Login',
-      messages: req.flash()
+      messages: req.flash(),
+      resources: resources
     })
   }
 )
