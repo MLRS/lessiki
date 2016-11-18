@@ -2,11 +2,11 @@
 
 ## Resources
 
-- Each dictionary or lexicon is a **resource** with a name e.g. `kaufmann` or `minsel`
+- Each dictionary or lexicon is a **resource** with a name e.g. `petersenkaufmann` or `minsel`
 - Configuration info for each resource is maintained in `resources-config.js`
 - Each resource can have multiple **entities**, where the default one is named **entry**.
 - Each entity corresponds to a collection in the database:
-  - For single-entity resources, a default collection is assumed with the same name as resource, e.g. `kaufmann`
+  - For single-entity resources, a default collection is assumed with the same name as resource, e.g. `petersenkaufmann`
   - For multi-entity resources, collection names should be specified in `resources-config.js`, e.g.:
   ```js
   minsel: {
@@ -73,7 +73,7 @@ Example document:
 {
   "username" : "...",
   "password" : "...",
-  "access" : ["kaufmann", "minsel"]
+  "access" : ["petersenkaufmann", "minsel"]
 }
 ```
 

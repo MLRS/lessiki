@@ -71,7 +71,8 @@ var add_edit = function (req, res, next, params) {
         title: params.title,
         resource: req.query.resource,
         schema: data.schema,
-        id: params.id
+        id: params.id,
+        resources: resources
       })
     }
   )
@@ -80,7 +81,7 @@ var add_edit = function (req, res, next, params) {
 /* Add new entry */
 router.get('/add',
   checkResource(),
-  // checkAccess(), TODO: re-enable
+  checkAccess(),
   function (req, res, next) {
     add_edit(req, res, next, {
       'title': 'New entry',
@@ -92,7 +93,7 @@ router.get('/add',
 /* Edit entry */
 router.get('/edit',
   checkResource(),
-  // checkAccess(), TODO: re-enable
+  checkAccess(),
   function (req, res, next) {
     add_edit(req, res, next, {
       'title': 'Edit entry',

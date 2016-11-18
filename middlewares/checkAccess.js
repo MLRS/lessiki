@@ -13,6 +13,7 @@
  *
  * Options:
  *   - `redirectTo`   URL to redirect to for login, defaults to _/login_
+ *                    set to null for API mode (no redirection, just HTTP error)
  *   - `setReturnTo`  set redirectTo in session, defaults to _true_
  *
  * @param {Object} options
@@ -25,27 +26,37 @@ module.exports = function checkAccess (options) {
     options = { redirectTo: options }
   }
   options = options || {}
-  var url = options.redirectTo || '/login'
+  var url = (options.redirectTo === undefined) ? '/login' : options.redirectTo
   var setReturnTo = (options.setReturnTo === undefined) ? true : options.setReturnTo
 
   return function (req, res, next) {
     // Check logged in
     if (!req.isAuthenticated || !req.isAuthenticated()) {
-      if (setReturnTo && req.session) {
-        req.session.returnTo = res.locals.baseURL + (req.originalUrl || req.url)
+      let msg = 'You must be logged in to access that location.'
+      if (url) {
+        if (setReturnTo && req.session) {
+          req.session.returnTo = res.locals.baseURL + (req.originalUrl || req.url)
+        }
+        req.flash('error', msg)
+        return res.redirect(url)
+      } else {
+        return res.status(401).send(msg)
       }
-      return res.redirect(url)
     }
 
     // Check access
     var resource = (req.params.resource) ? req.params.resource : req.query.resource
     if (req.user.access.indexOf(resource) === -1 && req.user.access !== 'all') {
-      res.status(401).send('User ' + req.user.username + ' is not authorised to access resource: ' + resource)
-      return
-      // if (setReturnTo && req.session) {
-      //   req.session.returnTo = res.locals.baseURL + (req.originalUrl || req.url)
-      // }
-      // return res.redirect(url)
+      let msg = 'You are not authorised to access resource: ' + resource
+      if (url) {
+        if (setReturnTo && req.session) {
+          req.session.returnTo = res.locals.baseURL + (req.originalUrl || req.url)
+        }
+        req.flash('error', msg)
+        return res.redirect(url)
+      } else {
+        return res.status(401).send(msg)
+      }
     }
 
     // Ok
