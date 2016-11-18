@@ -13,10 +13,6 @@ router.get('/:resource/',
     var res_obj = resources[req.params.resource]
     res_obj['key'] = req.params.resource
     res.render('resource-index', {
-      'search': {
-        'query': req.query.s,
-        'results': [] // TODO
-      },
       'resources': resources,
       'resource': res_obj
     })
