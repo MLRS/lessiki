@@ -17,6 +17,7 @@ router.get('/search/',
     var conditions = {
       '$or': [
         { 'lemma': re },
+        { 'alternatives': re },
         { 'definitions.gloss': re },
         { 'definitions.gloss': re_capit }
       ]

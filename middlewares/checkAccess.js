@@ -32,7 +32,7 @@ module.exports = function checkAccess (options) {
   return function (req, res, next) {
     // Check logged in
     if (!req.isAuthenticated || !req.isAuthenticated()) {
-      let msg = 'You must be logged in to access that location.'
+      var msg = 'You must be logged in to access that location.'
       if (url) {
         if (setReturnTo && req.session) {
           req.session.returnTo = res.locals.baseURL + (req.originalUrl || req.url)
@@ -47,7 +47,7 @@ module.exports = function checkAccess (options) {
     // Check access
     var resource = (req.params.resource) ? req.params.resource : req.query.resource
     if (req.user.access.indexOf(resource) === -1 && req.user.access !== 'all') {
-      let msg = 'You are not authorised to access resource: ' + resource
+      var msg = 'You are not authorised to access resource: ' + resource
       if (url) {
         if (setReturnTo && req.session) {
           req.session.returnTo = res.locals.baseURL + (req.originalUrl || req.url)

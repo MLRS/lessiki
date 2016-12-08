@@ -94,12 +94,12 @@ html(lang="en")
           a.navbar-brand(href=baseURL+"/",style="color:firebrick") Lessiki
         .navbar-collapse.collapse#navbar-collapse
           ul.nav.navbar-nav
-            li
-              a(href=baseURL+"/readme") API
+            //- li
+            //-   a(href=baseURL+"/readme") API
             if resources
               li.dropdown
                 a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
-                  |  Resources
+                  |  Resources  
                   span.caret
                 ul.dropdown-menu
                   for v,k in resources

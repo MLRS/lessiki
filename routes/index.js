@@ -104,7 +104,7 @@ router.get('/edit',
 
 var zip = function (arr1, arr2) {
   var out = {}
-  for (let k in arr1) {
+  for (var k in arr1) {
     out[arr1[k]] = arr2[k]
   }
   return out
@@ -121,7 +121,7 @@ router.get('/search',
     var find = function (resource, callback) {
       // TODO: making HTTP request is inefficient
       var url = {
-        baseUrl: 'http://127.0.0.1:3002', // TODO make robust
+        baseUrl: config.baseURL,
         url: '/resources/' + resource + '/search',
         method: 'GET',
         headers: {},

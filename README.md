@@ -56,12 +56,20 @@ Note that the `search` command should at least support the `s` query parameter.
 | `/add`    | `resource`, [`entity`]       | Create new entry. If ommitted, `entity` defaults to `entry`.  |
 | `/edit`   | `resource`, [`entity`], `id` | Edit single entry. If ommitted, `entity` defaults to `entry`. |
 
+## Requirements
+
+- Node.js
+- Global Node packages: bower
+
 ## Installing
 
 1. Clone the git repo
 1. Install Node modules with `npm install`
+1. Install Bower components with `bower install`
 1. Create `server-config.js` (you can copy `server-config.sample.js`)
-1. Populate database
+1. Populate database  
+  `mongodump --db lessiki --out data`  
+  `mongorestore --drop --db lessiki data/lessiki`
 1. Start with `pm2 start processes.json`
 1. Open <http://localhost:3002/>
 

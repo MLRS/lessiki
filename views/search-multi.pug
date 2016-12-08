@@ -1,8 +1,26 @@
 extends layout
 
 block content
-  h1 Search results for “#{search.query}”
-    //- small   in #{search.resources}
+  h1 Search results
+    
+  form(role="search",action=baseURL+"/search",method="GET")
+    .form-group
+      .input-group
+        input(type="search",name="s",autofocus="true",placeholder="Search in multiple resources",value=search.query).form-control.input-lg
+        .input-group-btn
+          //- add data-actions-box="true" when many resources...
+          select.selectpicker(
+            name="resource",
+            multiple,
+            title="Select resources",
+            data-selected-text-format="count",
+            data-count-selected-text="{0} resources selected",
+            data-style="btn-default btn-lg"
+          )
+            for v,k in resources
+              option(value=k,selected= search.resources.indexOf(k) > -1)= v.name
+          button(type="submit").btn.btn-primary.btn-lg
+            span.glyphicon.glyphicon-search
 
   div
     ul.nav.nav-tabs(role='tablist')
@@ -22,7 +40,9 @@ block content
       var ignore_fields = ['_id','gabra_id']
       for (var resource in results) {
         var resource_results = results[resource]
-        var headings = ['lemma']
+
+        // Collect headings
+        var headings = ['lemma', 'pos']
         for (var rx in resource_results) {
           var item = resource_results[rx]
           for (var field in item) {
@@ -36,6 +56,8 @@ block content
           var field = headings[hx]
           $('<th>').text(field).appendTo(row)
         }
+        
+        // Add entries
         for (var rx in resource_results) {
           var item = resource_results[rx]
           var row = $('<tr>').appendTo($('.tab-pane#' + resource + ' tbody').first())

@@ -72,7 +72,8 @@ app.use(function (req, res, next) {
 // Authentication
 var passport = require('passport')
 var LocalStrategy = require('passport-local').Strategy
-passport.use(new LocalStrategy({
+passport.use(new LocalStrategy(
+  {
     session: true
   },
   function (username, password, done) {
@@ -113,8 +114,8 @@ app.use('/', require('./routes/index'))
 
 // Custom APIs per resource
 var resources = require('./resources-config')
-for (let resource in resources) {
-  let custom_api = './resources/' + resource + '/custom-api.js'
+for (var resource in resources) {
+  var custom_api = './resources/' + resource + '/custom-api.js'
   try {
     app.use('/resources/' + resource + '/', require(custom_api))
   } catch (err) {

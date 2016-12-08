@@ -36,9 +36,9 @@ router.get('/:resource/search',
     var conditions = {}
     // s param
     if (req.query.hasOwnProperty('s')) {
-      let or = []
-      for (let i in search_fields) {
-        let obj = {}
+      var or = []
+      for (var i in search_fields) {
+        var obj = {}
         obj[search_fields[i]] = new RegExp(req.query.s)
         or.push(obj)
       }
@@ -46,7 +46,7 @@ router.get('/:resource/search',
       delete req.query.s
     }
     // any other fields as params
-    for (let k in req.query) {
+    for (var k in req.query) {
       conditions[k] = new RegExp(req.query[k])
     }
 
