@@ -35,7 +35,7 @@ module.exports = function checkAccess (options) {
       var msg = 'You must be logged in to access that location.'
       if (url) {
         if (setReturnTo && req.session) {
-          req.session.returnTo = res.locals.baseURL + (req.originalUrl || req.url)
+          req.session.returnTo = res.locals.baseURL + (req.originalUrl || req.url) // TODO debug this not working
         }
         req.flash('error', msg)
         return res.redirect(url)
